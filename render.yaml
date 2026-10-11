@@ -12,6 +12,8 @@ services:
     autoDeploy: true
     envVars:
       # Cloud MySQL (e.g. Aiven): jdbc:mysql://HOST:PORT/defaultdb?sslMode=REQUIRED
+      # No database yet? Use the built-in H2 (data resets on every restart):
+      #   jdbc:h2:mem:artisan;MODE=MySQL;DATABASE_TO_LOWER=TRUE   with username sa / password sa
       - key: JDBC_DATABASE_URL
         sync: false
       - key: JDBC_DATABASE_USERNAME
