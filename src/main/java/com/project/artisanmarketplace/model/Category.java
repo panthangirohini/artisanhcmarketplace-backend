@@ -17,8 +17,20 @@ public class Category {
 
     private String description;
 
+    private String icon;   // emoji shown on the category pills, e.g. "🏺"
+
+    public Category() {}
+
+    public Category(String name, String description, String icon) {
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+    }
+
     // Getters and Setters
     public Long getId() { return id; }
+    public String getIcon() { return icon; }
+    public void setIcon(String icon) { this.icon = icon; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }

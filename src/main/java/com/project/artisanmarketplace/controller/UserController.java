@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 import com.project.artisanmarketplace.security.JwtUtil;
 
@@ -31,8 +32,9 @@ public class UserController {
         if (userRepository.existsByEmail(user.getEmail()))
             return ResponseEntity.badRequest().body("Email already registered");
 
-        if (user.getRole() == null || user.getRole().isBlank())
-            user.setRole("CUSTOMER");
+        // Self-registration can only create customers or artisans — admins are seeded/promoted
+        String role = user.getRole() == null ? "" : user.getRole().trim().toUpperCase();
+        user.setRole(role.equals("ARTISAN") ? "ARTISAN" : "CUSTOMER");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -55,7 +57,7 @@ public class UserController {
         return ResponseEntity.ok(Map.of(
             "token", token,
             "id",    existing.getId(),
-            "name",  existing.getName(),
+            "name",  Objects.toString(existing.getName(), ""),
             "email", existing.getEmail(),
             "role",  existing.getRole()
         ));
